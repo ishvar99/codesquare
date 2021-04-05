@@ -1,9 +1,11 @@
 import * as esbuild from 'esbuild-wasm'
 import './App.css';
 import React, {useState,useEffect,useRef} from 'react'
-function App() {
+import {unpkgPathPlugin} from './plugins/unplug-path-plugin'
+const App =()=> {
   const [input, setInput] = useState('');
   const [code, setCode] = useState('');
+  const ref= useRef<any>();
   useEffect(() => {
     startService();
   }, []);
@@ -12,17 +14,19 @@ function App() {
       worker: true,
       wasmURL: '/esbuild.wasm'
     })
-    useRef.current= service;
+    ref.current= service;
   }
   const onClick=async ()=>{
-    if(!useRef.current){
+    if(!ref.current){
       return;
     }
-    const result =await useRef.current.transform(input,{
-      loader:"jsx",
-      target:"es2015"
-    })
-    setCode(result.code);
+    const result = await ref.current.build({
+      entryPoints: ['index.js'],
+      bundle: true,
+      write: false,
+      plugins: [unpkgPathPlugin()],
+    });
+    setCode(result.outputFiles[0].text);
   }
   return (
     <div>
