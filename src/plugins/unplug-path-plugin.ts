@@ -9,23 +9,27 @@ export const unpkgPathPlugin = (inputCode: string) => {
     name: 'unpkg-path-plugin',
     setup(build: esbuild.PluginBuild) {
      // it hijacks esbuild default behaviour for looking a package in local file system
-      build.onResolve({ filter: /.*/ }, async (args: any) => {
-        console.log('onResolve', args);
-        if(args.path==='index.js'){
+     // resolving index.js file
+      build.onResolve({ filter: /(^index\.js$)/ }, async (args: any) => {
         return { path: args.path, namespace: 'a' };
-        }
-        if(args.path.includes('./')||args.path.includes('../'))
-        {
+      });
+      // includes ./ or ../
+      // handling relative paths in module
+      build.onResolve({ filter: /^\.+\// }, async (args: any) => {
         return {
-        path:new URL(args.path, 'https://unpkg.com' + args.resolveDir + '/').href, 
-        namespace:'a'
-      }
+          path:new URL(args.path, 'https://unpkg.com' + args.resolveDir + '/').href, 
+          namespace:'a'
         }
+      });
+      //handling main file of a module
+    build.onResolve({ filter: /.*/ }, async (args: any) => {
         return {
           namespace:'a',
           path:`https://unpkg.com/${args.path}`
         }
       });
+        
+      
 
       build.onLoad({ filter: /.*/ }, async (args: any) => {
         console.log('onLoad', args);
