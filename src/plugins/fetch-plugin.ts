@@ -14,10 +14,12 @@ const fileCache= localforage.createInstance({
     contents:inputCode,
   };
   })
-  build.onLoad({filter:/.css$/},async(args:any)=>{
-   const cachedResult =await fileCache.getItem<esbuild.OnLoadResult>(args.path);
+ build.onLoad({filter:/.*/},async(args:any)=>{
+  const cachedResult =await fileCache.getItem<esbuild.OnLoadResult>(args.path);
    if(cachedResult)
    return cachedResult;
+  })
+  build.onLoad({filter:/.css$/},async(args:any)=>{
    const {data,request}= await axios.get(args.path);
    const escaped = data
           .replace(/\n/g, '')
@@ -38,9 +40,6 @@ const fileCache= localforage.createInstance({
   })
   build.onLoad({ filter: /.*/ }, async (args: any) => {
    console.log('onLoad', args);
-   const cachedResult =await fileCache.getItem<esbuild.OnLoadResult>(args.path);
-   if(cachedResult)
-   return cachedResult;
    const {data,request}= await axios.get(args.path);
    const result:esbuild.OnLoadResult = {
      loader: 'jsx',  
