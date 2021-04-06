@@ -10,9 +10,18 @@ export const unpkgPathPlugin = () => {
         if(args.path==='index.js'){
         return { path: args.path, namespace: 'a' };
         }
-        
-        return {path:`https://unpkg.com/${args.path}`,namespace:'a'}
-        
+        if(args.path.includes('./')||args.path.includes('../'))
+        {
+          console.log("Debug" +new URL(args.path, 'https://unpkg.com' + args.resolveDir + '/').href)
+        return {
+        path:new URL(args.path, 'https://unpkg.com' + args.resolveDir + '/').href, 
+        namespace:'a'
+      }
+        }
+        return {
+          namespace:'a',
+          path:`https://unpkg.com/${args.path}`
+        }
       });
 
       build.onLoad({ filter: /.*/ }, async (args: any) => {
@@ -22,18 +31,17 @@ export const unpkgPathPlugin = () => {
           return {
             loader: 'jsx',
             contents: `
-              import message from 'tiny-test-pkg';    
+              const message =require('nested-test-pkg');    
               console.log(message);
             `,
           };
-        } 
-        const {data}= await axios.get('https://unpkg.com/tiny-test-pkg@1.0.0/index.js');
+        }
+        console.log('test' + args.path)
+        const {data,request}= await axios.get(args.path);
         return {
          loader: 'jsx',
-         contents: `
-           import message from 'tiny-test-pkg';    
-           console.log(message);
-         `,
+         contents: data,
+         resolveDir: new URL('./',request.responseURL).pathname
        };
         // else {
         //   return {
