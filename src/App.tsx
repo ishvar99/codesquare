@@ -5,7 +5,6 @@ import {unpkgPathPlugin} from './plugins/unplug-path-plugin'
 import { fetchPlugin } from './plugins/fetch-plugin';
 const App =()=> {
   const [input, setInput] = useState('');
-  const [code, setCode] = useState('');
   const ref= useRef<any>();
   const iframe = useRef<any>();
   useEffect(() => {
@@ -22,6 +21,7 @@ const App =()=> {
     if(!ref.current){
       return;
     }
+    iframe.current.srcdoc=html;
     const result = await ref.current.build({
       entryPoints: ['index.js'],
       bundle: true,
@@ -61,8 +61,7 @@ const App =()=> {
     <div>
       <button onClick={onClick}>Submit</button>
     </div>
-    <pre>{code}</pre>
-    <iframe ref={iframe} title="output-frame" sandbox="allow-scripts" srcDoc={html}></iframe> 
+    <iframe ref={iframe} title="preview" sandbox="allow-scripts" srcDoc={html}></iframe> 
     </div>
   );
 }
