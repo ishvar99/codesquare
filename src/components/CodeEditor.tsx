@@ -1,8 +1,19 @@
 import React from 'react'
-import Editor from '@monaco-editor/react'
-const CodeEditor = () => {
+import Editor,{Monaco} from '@monaco-editor/react'
+import monaco from 'monaco-editor';
+interface CodeEditorProps{
+ initialValue:string,
+ onChange(e:string):void
+}
+const CodeEditor:React.FC<CodeEditorProps> = ({initialValue,onChange}) => {
+ const onEditorMount=(editor:monaco.editor.IStandaloneCodeEditor,monaco:Monaco)=>{
+  editor.onDidChangeModelContent(()=>{
+   console.log(editor.getValue());
+   onChange(editor.getValue());
+  })
+ }
  return(
-  <Editor theme="vs-dark" options={{
+  <Editor theme="vs-dark" onMount={onEditorMount} value={initialValue} options={{
    wordWrap:'on',
    minimap:{enabled:false},
    showUnused:false,
