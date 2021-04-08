@@ -1,3 +1,4 @@
+import 'bulmaswatch/superhero/bulmaswatch.min.css'
 import * as esbuild from 'esbuild-wasm'
 import './App.css';
 import React, {useState,useEffect,useRef} from 'react'
@@ -7,6 +8,7 @@ import CodeEditor from './components/CodeEditor'
 const App =()=> {
   const [input, setInput] = useState('');
   const ref= useRef<any>();
+  const editorRef = useRef<any>();
   const iframe = useRef<any>();
   useEffect(() => {
     startService();
