@@ -1,9 +1,9 @@
 import './CodeEditor.css'
 import './syntax.css'
 import React,{useRef} from 'react'
-import Editor,{Monaco,OnMount} from '@monaco-editor/react'
+import Editor,{OnMount} from '@monaco-editor/react'
 import monaco from 'monaco-editor';
-import prettier, { format } from 'prettier'
+import prettier from 'prettier'
 import parser from 'prettier/parser-babel'
 import codeShift from 'jscodeshift'
 import Highlighter from 'monaco-jsx-highlighter';
