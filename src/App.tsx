@@ -7,6 +7,7 @@ const App =()=> {
   const [input, setInput] = useState('');
   const [code, setCode] = useState('');
   const ref= useRef<any>();
+  const iframe = useRef<any>();
   useEffect(() => {
     startService();
   }, []);
@@ -27,13 +28,32 @@ const App =()=> {
       write: false,
       plugins: [unpkgPathPlugin(),fetchPlugin(input)],
       define:{
-        'process.env.PRODUCTION':'"production"',
+        'process.env.NODE_ENV':'"production"',
         global: 'window'
       }
     });
-    setCode(result.outputFiles[0].text);
+    //indirect communication from the parent to child
+    iframe.current.contentWindow.postMessage(result.outputFiles[0].text,'*')
+    // * refers to all domains
   }
-  let html =`<script>${code}</script>`
+  let html =`<html>
+  <head>
+  </head>
+  <body>
+  <div id="root">
+  </div>
+  <script>
+  window.addEventListener('message',(event)=>{
+    try{
+    eval(event.data)
+    }catch(err){
+      const root =document.querySelector('#root')
+      root.innerHTML='<div style="color:red;"><h4>Runtime Error</h4>' +err+ '</div>'
+    }
+  },false)
+  </script>
+  </body>
+  </html>`
   return (
     <div>
     <textarea value={input} onChange={(e)=>setInput(e.target.value)}>
@@ -42,7 +62,7 @@ const App =()=> {
       <button onClick={onClick}>Submit</button>
     </div>
     <pre>{code}</pre>
-    <iframe title="output-frame" sandbox="allow-scripts" srcDoc={html}></iframe> 
+    <iframe ref={iframe} title="output-frame" sandbox="allow-scripts" srcDoc={html}></iframe> 
     </div>
   );
 }
