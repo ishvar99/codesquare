@@ -1,6 +1,6 @@
 import 'bulmaswatch/superhero/bulmaswatch.min.css'
 import './App.css';
-import CodeCell from './components/CodeCell';
+import CodeCell from './components/CodeCell/CodeCell';
 const App =()=> {
 
   return (
