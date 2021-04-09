@@ -60,7 +60,7 @@ const CodeEditor:React.FC<CodeEditorProps> = ({initialValue,onChange}) => {
    fontSize:16,
    scrollBeyondLastLine:false,
    automaticLayout:true,
-  }} language="javascript" height="500px"/>
+  }} language="javascript" height="100%"/>
   </div>
  )
  
