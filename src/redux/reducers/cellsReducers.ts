@@ -31,7 +31,21 @@ const reducer  = produce((state:CellsState=intialState,action:Action):CellsState
    return;
   }
   case Types.INSERT_CELL_BEFORE:{
-   return state;
+   const {id}=action.payload;
+   const cell: Cell ={
+    content:'',
+    type:action.payload.type,
+    id: Math.random().toString(36).substr(2,5)
+   }
+   state.data[cell.id]=cell;
+   const foundIndex = state.order.findIndex((i)=>i===id);
+   if(foundIndex<0){
+    state.order.push(cell.id);
+   }
+   else{
+    state.order.splice(foundIndex,0,cell.id)
+   }
+   return;
   }
   case Types.DELETE_CELL:{
    const id=action.payload;
