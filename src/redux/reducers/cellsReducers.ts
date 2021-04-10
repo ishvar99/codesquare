@@ -1,3 +1,4 @@
+import { Types } from '../action-types';
 import { Action } from '../actions';
 import {Cell} from '../cell'
 
@@ -16,9 +17,24 @@ const intialState: CellsState={
  data:{}
 }
 
-const reducer  = (state:CellsState=intialState,action:Action)=>{
- 
- return state;
+const reducer  = (state:CellsState=intialState,action:Action):CellsState=>{
+ switch(action.type){
+  case Types.MOVE_CELL:{
+   return state;
+  }
+  case Types.INSERT_CELL_BEFORE:{
+   return state;
+  }
+  case Types.DELETE_CELL:{
+   return state;
+  }
+  case Types.UPDATE_CELL:{
+   return state;
+  }
+  default:{
+   return state;
+  }
+ }
 }
 
 export default reducer;
