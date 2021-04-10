@@ -1,7 +1,8 @@
 import React,{useRef,useEffect} from 'react'
 import './Preview.css'
 interface PreviewProps{
- code: string
+ code: string,
+ error:string
 }
 let html =`<html>
 <head>
@@ -32,7 +33,7 @@ window.addEventListener('message',(event)=>{
 </script>
 </body>
 </html>`
-const Preview: React.FC<PreviewProps> = ({code}) => {
+const Preview: React.FC<PreviewProps> = ({code,error}) => {
  useEffect(() => {
   iframe.current.srcdoc=html;
   //indirect communication from the parent to child
@@ -46,6 +47,7 @@ const Preview: React.FC<PreviewProps> = ({code}) => {
  return (
    <div className='preview-wrapper'>
   <iframe ref={iframe} title="preview" sandbox="allow-scripts" srcDoc={html}></iframe>
+  {error && <div className="preview-error">{error}</div>}
   </div>
  )
 }
