@@ -29,7 +29,10 @@ const Preview: React.FC<PreviewProps> = ({code}) => {
   iframe.current.srcdoc=html;
   //indirect communication from the parent to child
   // * refers to all domains
-  iframe.current.contentWindow.postMessage(code,'*')
+  setTimeout(()=>{
+    iframe.current.contentWindow.postMessage(code,'*')
+  },50)
+
  }, [code]);
  const iframe = useRef<any>();
  return (
