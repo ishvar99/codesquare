@@ -6,16 +6,15 @@ const CellList: React.FC = () => {
  const cells = useTypedSelector(({ cells: { order, data } }) =>
  order.map((id) => data[id])
 );
-console.log(cells.length===0);
 const renderedCells= cells.map((cell)=>
 <Fragment key={cell.id}>
- <AddCell nextCellId={cell.id}/>
  <CellListItem cell={cell} key={cell.id}/>
+ <AddCell previousCellId={cell.id}/>
  </Fragment>)
  return ( 
     <div>
+      <AddCell forceVisible={cells.length===0} previousCellId={null}/>
      {renderedCells}
-     <AddCell forceVisible={cells.length===0} nextCellId={null}/>
     </div>
  )
 }
