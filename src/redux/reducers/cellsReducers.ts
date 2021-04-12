@@ -17,7 +17,7 @@ const intialState: CellsState={
  data:{}
 }
 
-const reducer  = produce((state:CellsState=intialState,action:Action):CellsState|void=>{
+const reducer  = produce((state:CellsState=intialState,action:Action):void=>{
  switch(action.type){
   case Types.MOVE_CELL:{
    const {id, direction}=action.payload;
@@ -68,10 +68,7 @@ const reducer  = produce((state:CellsState=intialState,action:Action):CellsState
    //  }
    // };
   }
-  default:{
-   return state;
-  }
  }
-})
+},intialState)
 
 export default reducer;
