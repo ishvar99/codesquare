@@ -10,12 +10,12 @@ const store = createStore(
 )
 store.dispatch(
   {
-    type:Types.INSERT_CELL_BEFORE,
+    type:Types.INSERT_CELL_AFTER,
     payload:{id:null,type:"code"},
   },)
   store.dispatch(
     {
-      type:Types.INSERT_CELL_BEFORE,
+      type:Types.INSERT_CELL_AFTER,
       payload:{id:null,type:"text"},
     },)
 export default store
