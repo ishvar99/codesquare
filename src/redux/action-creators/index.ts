@@ -19,7 +19,7 @@ return {
   }
 }
 }
-export const insertCellBefore=(id:string, type:CellTypes):InsertCellBeforeAction=>{
+export const insertCellBefore=(id:string|null, type:CellTypes):InsertCellBeforeAction=>{
  return { 
   type:Types.INSERT_CELL_BEFORE,
  payload: {
