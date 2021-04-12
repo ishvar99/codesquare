@@ -1,9 +1,14 @@
 import React,{useState,useEffect,useRef} from 'react'
 import './TextEditor.css'
+import {useActions} from '../../hooks/useActions';
 import MDEditor from '@uiw/react-md-editor';
-const TextEditor = () => {
+import {Cell} from '../../redux/cell'
+interface TextEditorProps{
+ cell:Cell
+}
+const TextEditor:React.FC<TextEditorProps> = ({cell}) => {
  const ref= useRef<HTMLDivElement|null>(null);
- const [value, setValue] = useState('# Header')
+ const {updateCell}=useActions();
  useEffect(() => {
   const listener = (event:MouseEvent)=>{
    if(ref.current && event.target && ref.current.contains(event.target as Node)){
@@ -20,12 +25,12 @@ const TextEditor = () => {
  const [editing, setEditing] = useState(false)
  if(editing){
   return  <div className='text-editor' ref={ref}>
-  <MDEditor onChange={(v)=>setValue(v||'')} value={value}/>
+  <MDEditor onChange={(v)=>updateCell(cell.id,v||'')} value={cell.content}/>
  </div>
  }
  return (
  <div className='text-editor card' onClick={()=>setEditing(true)}>
-  <div className='card-content'><MDEditor.Markdown source={value}/>
+  <div className='card-content'><MDEditor.Markdown source={cell.content||"Click to edit"}/>
   </div>
   </div>
  )
